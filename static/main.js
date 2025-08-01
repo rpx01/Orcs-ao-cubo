@@ -7,20 +7,39 @@ async function updateGameState() {
 function renderGame(data) {
   const div = document.getElementById("game-state");
 
-  // Se o jogo terminou, mostra a tela de Fim de Jogo
   if (data.game_over) {
     div.innerHTML = `
       <div class="text-center">
         <h1>Fim de Jogo!</h1>
         <h2>Pontuação Final: ${data.score}</h2>
-        <p>Você não tem mana suficiente para derrotar os orcs restantes.</p>
+        <p>${data.log[data.log.length - 1] || ''}</p>
         <button class="btn btn-primary btn-lg" onclick="restartGame()">Jogar Novamente</button>
       </div>
     `;
     return;
   }
 
-  // Caso contrário, renderiza o estado normal do jogo
+  let mapHtml = '<div class="row">';
+  for (let lane = 1; lane <= 6; lane++) {
+    mapHtml += `<div class="col-md-4 border p-2"><h4>Região ${lane}</h4>`;
+    const areaNames = ['Externa', 'Meio', 'Interna'];
+    for (let area = 0; area < 3; area++) {
+      mapHtml += `<div><strong>${areaNames[area]}:</strong>`;
+      data.map[lane][area].forEach(orc => {
+        mapHtml += `<div class="d-flex justify-content-between align-items-center">`;
+        mapHtml += `<span>${orc.name} (Vida: ${orc.life})</span>`;
+        mapHtml += `<div>`;
+        data.player.deck.forEach(card => {
+          mapHtml += `<button class="btn btn-sm btn-danger ml-1" onclick="attack('${card.name}','${orc.id}',${lane},${area})" ${data.player.mana < card.mana_cost ? 'disabled' : ''}>${card.name}</button>`;
+        });
+        mapHtml += `</div></div>`;
+      });
+      mapHtml += `</div>`;
+    }
+    mapHtml += `</div>`;
+  }
+  mapHtml += `</div><button class="btn btn-primary mt-3" onclick="endTurn()">Terminar Turno</button>`;
+
   div.innerHTML = `
     <div class="d-flex justify-content-between mb-3">
       <h3>Rodada: ${data.round}</h3>
@@ -44,38 +63,26 @@ function renderGame(data) {
         </div>
       </div>
     </div>
-
-    <h3>Orcs em campo:</h3>
-    <ul class="list-group">
-      ${data.orcs.map(orc => `
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          <div>
-            <strong>${orc.name}</strong><br>
-            Vida: ${orc.life} | Pontos: ${orc.points}
-          </div>
-          <div class="btn-group">
-            ${data.player.deck.map(card => `
-              <button class="btn btn-sm btn-danger ml-1" onclick="attack('${card.name}', '${orc.name}')" ${data.player.mana < card.mana_cost ? 'disabled' : ''}>
-                Atacar com ${card.name}
-              </button>
-            `).join("")}
-          </div>
-        </li>
-      `).join("")}
-    </ul>
+    ${mapHtml}
   `;
 }
 
-async function attack(cardName, orcName) {
+async function attack(cardName, orcId, lane, area) {
   const res = await fetch("/api/attack", {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ card_name: cardName, orc_name: orcName })
+    body: JSON.stringify({ card_name: cardName, orc_id: orcId, lane: String(lane), area })
   });
   const data = await res.json();
   if (data.result === "not_enough_mana") {
-      alert("Mana insuficiente!");
+    alert("Mana insuficiente!");
   }
+  renderGame(data);
+}
+
+async function endTurn() {
+  const res = await fetch("/api/end_turn", { method: 'POST' });
+  const data = await res.json();
   renderGame(data);
 }
 
