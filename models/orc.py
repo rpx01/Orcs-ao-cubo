@@ -1,5 +1,6 @@
 import random
 
+
 class Orc:
     def __init__(self, name, life, points):
         self.name = name
@@ -10,10 +11,20 @@ class Orc:
         return {
             "name": self.name,
             "life": self.life,
-            "points": self.points
+            "points": self.points,
         }
 
-def random_orc():
+
+def random_orc(round_number=1):
     names = ["Orc Guerreiro", "Orc Xamã", "Orc Gigante"]
     name = random.choice(names)
-    return Orc(name, random.randint(3, 6), random.randint(1, 3))
+
+    # A vida e os pontos base aumentam com a rodada
+    base_life = 3 + round_number
+    base_points = 1 + round_number
+
+    # Adiciona uma pequena variação aleatória
+    life = random.randint(base_life, base_life + 3)
+    points = random.randint(base_points, base_points + 2)
+
+    return Orc(name, life, points)
