@@ -1,0 +1,84 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    color: white; /* Define a cor do texto padrão como branco */
+}
+
+#game-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Ocupa a altura total da tela */
+    background-image: url('http://googleusercontent.com/file_content/1'); /* SUA IMAGEM DO MAPA */
+    background-size: cover;
+    background-position: center;
+}
+
+#top-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo preto semi-transparente */
+    font-size: 1.2em;
+}
+
+#map-area {
+    flex-grow: 1; /* Faz esta área ocupar o espaço restante */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 20px;
+}
+
+.region-lane {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 1px solid #8B4513; /* Cor de madeira escura */
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.orc-item {
+    background-color: rgba(139, 0, 0, 0.7); /* Vermelho escuro */
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 4px;
+}
+
+#player-area {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+}
+
+#player-stats {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+#player-hand {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.card-item {
+    background-color: #DEB887; /* Cor de pergaminho */
+    color: #3a2a1a; /* Texto escuro */
+    border: 3px solid #8B4513;
+    border-radius: 10px;
+    width: 120px;
+    padding: 10px;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+#end-turn-container {
+    text-align: center;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#end-turn-container button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+}
