@@ -21,17 +21,18 @@ function renderGame(data) {
   document.getElementById('round-info').innerText = `Rodada: ${data.round}`;
   document.getElementById('score-info').innerText = `Pontuação: ${data.score}`;
 
-  // Renderiza o mapa
+  // Renderiza o mapa como fatias de pizza
   const mapArea = document.getElementById('map-area');
   let mapHtml = '';
   for (let lane = 1; lane <= 6; lane++) {
-    mapHtml += `<div class="region-lane"><h4>Região ${lane}</h4>`;
+    mapHtml += `<div class="region-slice slice-${lane}">`;
     ['Externa', 'Meio', 'Interna'].forEach((areaName, areaIndex) => {
-        mapHtml += `<div><strong>${areaName}:</strong>`;
-        data.map[lane][areaIndex].forEach(orc => {
-            mapHtml += `<div class="orc-item">${orc.name} (Vida: ${orc.life})</div>`;
-        });
-        mapHtml += `</div>`;
+      const areaClass = ['outer', 'middle', 'inner'][areaIndex];
+      mapHtml += `<div class="region-area ${areaClass}"><strong>${areaName}:</strong>`;
+      data.map[lane][areaIndex].forEach(orc => {
+        mapHtml += `<div class="orc-item">${orc.name} (Vida: ${orc.life})</div>`;
+      });
+      mapHtml += `</div>`;
     });
     mapHtml += '</div>';
   }

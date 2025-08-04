@@ -1,14 +1,14 @@
 body {
     margin: 0;
     font-family: sans-serif;
-    color: white; /* Define a cor do texto padrão como branco */
+    color: white;
 }
 
 #game-container {
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Ocupa a altura total da tela */
-    background-image: url('http://googleusercontent.com/file_content/1'); /* SUA IMAGEM DO MAPA */
+    height: 100vh;
+    background-image: url('http://googleusercontent.com/file_content/1');
     background-size: cover;
     background-position: center;
 }
@@ -17,27 +17,65 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 10px 20px;
-    background-color: rgba(0, 0, 0, 0.5); /* Fundo preto semi-transparente */
+    background-color: rgba(0, 0, 0, 0.5);
     font-size: 1.2em;
 }
 
 #map-area {
-    flex-grow: 1; /* Faz esta área ocupar o espaço restante */
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    padding: 20px;
+    flex-grow: 1;
+    position: relative;
+    width: 80vmin;
+    height: 80vmin;
+    margin: 20px auto;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
-.region-lane {
+.region-slice {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(50% 50%, 100% 0, 100% 100%);
+    transform-origin: 50% 50%;
+}
+
+.slice-1 { transform: rotate(0deg); }
+.slice-2 { transform: rotate(60deg); }
+.slice-3 { transform: rotate(120deg); }
+.slice-4 { transform: rotate(180deg); }
+.slice-5 { transform: rotate(240deg); }
+.slice-6 { transform: rotate(300deg); }
+
+.region-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
     background-color: rgba(0, 0, 0, 0.6);
-    border: 1px solid #8B4513; /* Cor de madeira escura */
-    border-radius: 8px;
-    padding: 10px;
+    border: 1px solid #8B4513;
+}
+
+.region-area.middle {
+    width: 70%;
+    height: 70%;
+    top: 15%;
+    left: 15%;
+}
+
+.region-area.inner {
+    width: 40%;
+    height: 40%;
+    top: 30%;
+    left: 30%;
 }
 
 .orc-item {
-    background-color: rgba(139, 0, 0, 0.7); /* Vermelho escuro */
+    background-color: rgba(139, 0, 0, 0.7);
     padding: 5px;
     margin-top: 5px;
     border-radius: 4px;
@@ -61,8 +99,8 @@ body {
 }
 
 .card-item {
-    background-color: #DEB887; /* Cor de pergaminho */
-    color: #3a2a1a; /* Texto escuro */
+    background-color: #DEB887;
+    color: #3a2a1a;
     border: 3px solid #8B4513;
     border-radius: 10px;
     width: 120px;
